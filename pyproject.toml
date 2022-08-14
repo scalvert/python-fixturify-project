@@ -10,8 +10,8 @@ description = "Dynamic fixture creation for your tests"
 readme = "README.md"
 authors = ["python-fixturify-project <steve.calvert@gmail.com>"]
 license = "MIT"
-repository = "https://github.com/python-fixturify-project/python-fixturify-project"
-homepage = "https://github.com/python-fixturify-project/python-fixturify-project"
+repository = "https://github.com/scalvert/python-fixturify-project"
+homepage = "https://github.com/scalvert/python-fixturify-project"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
 keywords = []  #! Update me
