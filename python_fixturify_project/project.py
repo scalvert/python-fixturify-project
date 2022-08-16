@@ -80,10 +80,9 @@ class Project:
         del self._files
 
     def __auto_base_dir(self):
-        """"""
+        """Creates and sets the base_dir if not explicitly configured during init"""
         if not self.base_dir:
             self.base_dir = tempfile.mkdtemp()
-        return self.base_dir
 
     def merge_files(self, dir_json):
         """Merges an object containing a directory represention with the existing files."""
