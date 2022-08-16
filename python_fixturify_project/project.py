@@ -75,6 +75,8 @@ class Project(object):
     def write_project(self):
         self.__auto_base_dir()
 
+        self.__write()
+
 
     def __write(self):
         Path(self.base_dir).mkdir(parents=True, exist_ok=True)
