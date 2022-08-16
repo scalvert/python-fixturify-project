@@ -1,37 +1,39 @@
 import shutil
 import tempfile
-
 from pathlib import Path
 
 from python_fixturify_project.exceptions import InvalidProjectError
 
+
 def deep_merge(a, b, path=None):
     "merges b into a"
-    if path is None: path = []
+    if path is None:
+        path = []
     for key in b:
         if key in a:
             if isinstance(a[key], dict) and isinstance(b[key], dict):
                 deep_merge(a[key], b[key], path + [str(key)])
             elif a[key] == b[key]:
-                pass # same leaf value
+                pass  # same leaf value
             else:
-                raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
+                raise Exception("Conflict at %s" % ".".join(path + [str(key)]))
         else:
             a[key] = b[key]
     return a
 
+
 def write_to_file(file_path, contents):
     print(f"writing file '{file_path}'")
-    with open(Path(file_path), 'w') as f:
+    with open(Path(file_path), "w") as f:
         f.write(contents)
+
 
 def create_directory(file_path):
     print(f"creating directory '{file_path}'")
     Path(file_path).mkdir(parents=True, exist_ok=True)
 
 
-
-class Project(object):
+class Project:
     def __init__(self):
         self._base_dir = None
         self._tmp = None
@@ -108,12 +110,14 @@ class Project(object):
         original_dir = Path(full_path)
         for entry in dir_structure:
             full_path = Path(full_path, entry)
-            if not isinstance(entry, str) or entry == '':
-                raise InvalidProjectError('Invalid directory structure given. Each key must be a non-empty string')
+            if not isinstance(entry, str) or entry == "":
+                raise InvalidProjectError(
+                    "Invalid directory structure given. Each key must be a non-empty string"
+                )
             if isinstance(dir_structure[entry], str):  # This is a file
                 write_to_file(full_path, dir_structure[entry])
             else:
-                if entry == '.' or entry == '..':
+                if entry == "." or entry == "..":
                     raise InvalidProjectError('Directory entry must not be "." or ".."')
 
                 create_directory(full_path)
