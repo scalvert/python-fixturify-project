@@ -23,13 +23,11 @@ def deep_merge(a, b, path=None):
 
 
 def write_to_file(file_path, contents):
-    print(f"writing file '{file_path}'")
     with open(Path(file_path), "w") as f:
         f.write(contents)
 
 
 def create_directory(file_path):
-    print(f"creating directory '{file_path}'")
     Path(file_path).mkdir(parents=True, exist_ok=True)
 
 
