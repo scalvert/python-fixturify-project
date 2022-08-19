@@ -32,10 +32,13 @@ def create_directory(file_path):
 
 
 class Project:
-    def __init__(self):
-        self._base_dir = None
-        self._tmp = None
-        self._files = {}
+    def __init__(self, base_dir=None, files=None):
+        self._base_dir = base_dir
+        self._files = files or {}
+
+        # If the user passed in a file structure on init, then short-circuit to the `write`
+        if self._files != None:
+            self.write(self._files)
 
     def __del__(self):
         # Ensure we clean up the temp dir structure on delete
@@ -45,7 +48,11 @@ class Project:
         return self
 
     def __exit__(self, *args):
-        shutil.rmtree(self.base_dir)
+        try:
+            shutil.rmtree(self.base_dir)
+        except FileNotFoundError:
+            # No need to do anything, file structure has already been cleaned up!
+            pass
 
     @property
     def base_dir(self):
