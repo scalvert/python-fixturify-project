@@ -40,8 +40,7 @@ def test_improper_write(test_input):
 def test_proper_write_with_cleanup():
     base_dir = None
 
-    with Project() as p:
-        p.write(GOOD_NESTED_DIRS)
+    with Project(files=GOOD_NESTED_DIRS) as p:
         base_dir = p.base_dir
 
         assert path.exists(base_dir) and path.isdir(base_dir)
