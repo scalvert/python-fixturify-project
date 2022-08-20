@@ -1,0 +1,30 @@
+# name: test_proper_write_with_cleanup
+  dict({
+    'nested_dir': dict({
+      'another_nested_dir': dict({
+        'final_text_file.txt': 'some text',
+        'last_nested_empty_dir': dict({
+        }),
+      }),
+      'another_nested_empty_dir': dict({
+      }),
+      'valid_empty_file.txt': '',
+    }),
+    'valid_file.txt': 'some text',
+  })
+# ---
+# name: test_read
+  dict({
+    'nested_dir': dict({
+      'another_nested_dir': dict({
+        'final_text_file.txt': 'some text',
+        'last_nested_empty_dir': dict({
+        }),
+      }),
+      'another_nested_empty_dir': dict({
+      }),
+      'valid_empty_file.txt': '',
+    }),
+    'valid_file.txt': 'some text',
+  })
+# ---
