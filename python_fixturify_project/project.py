@@ -1,12 +1,9 @@
 from typing import Any, Dict
 
 import glob
-import json
-import operator
 import os
 import shutil
 import tempfile
-from functools import reduce
 from pathlib import Path
 
 from dict_path import extract_dict, inject_dict
@@ -90,10 +87,6 @@ class Project:
 
         for path in glob.iglob(self.base_dir + "**/**", recursive=True):
             rel_path = os.path.relpath(path, self.base_dir)
-
-            t = "File" if os.path.isfile(path) else "Dir"
-            name = os.path.basename(path)
-            p = os.path.dirname(path)
 
             if rel_path == ".":
                 continue
