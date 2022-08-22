@@ -66,8 +66,8 @@ def test_read_recreates_project_from_disc_with_similar_filenames(snapshot):
             "valid_file.txt": "some text",
             "sub": {
                 "valid_file.txt": "some text",
-            }
-        }
+            },
+        },
     }
 
     with Project(files=files) as p:
