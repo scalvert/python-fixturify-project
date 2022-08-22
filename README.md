@@ -26,7 +26,7 @@ pip install -U python-fixturify-project
 or install with `Poetry`
 
 ```bash
-poetry add python-fixturify-project
+poetry add python-fixturify-project --dev
 ```
 
 ### Makefile usage
