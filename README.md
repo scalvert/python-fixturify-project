@@ -1,7 +1,5 @@
 # python-fixturify-project
 
-<div align="center">
-
 [![Build status](https://github.com/scalvert/python-fixturify-project/workflows/build/badge.svg?branch=main&event=push)](https://github.com/scalvert/python-fixturify-project/actions?query=workflow%3Abuild)
 [![Python Version](https://img.shields.io/pypi/pyversions/python-fixturify-project.svg)](https://pypi.org/project/python-fixturify-project/)
 [![Dependencies Status](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)](https://github.com/scalvert/python-fixturify-project/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Aapp%2Fdependabot)
@@ -13,9 +11,9 @@
 [![License](https://img.shields.io/github/license/scalvert/python-fixturify-project)](https://github.com/scalvert/python-fixturify-project/blob/master/LICENSE)
 ![Coverage Report](assets/images/coverage.svg)
 
-Dynamic fixture creation for your tests
+> Dynamic fixture creation for your tests
 
-</div>
+_A Python port of [node-fixturify-project](https://github.com/stefanpenner/node-fixturify-project)_
 
 ## Installation
 
