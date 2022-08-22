@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Build status](https://github.com/scalvert/python-fixturify-project/workflows/build/badge.svg?branch=master&event=push)](https://github.com/scalvert/python-fixturify-project/actions?query=workflow%3Abuild)
+[![Build status](https://github.com/scalvert/python-fixturify-project/workflows/build/badge.svg?branch=main&event=push)](https://github.com/scalvert/python-fixturify-project/actions?query=workflow%3Abuild)
 [![Python Version](https://img.shields.io/pypi/pyversions/python-fixturify-project.svg)](https://pypi.org/project/python-fixturify-project/)
 [![Dependencies Status](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)](https://github.com/scalvert/python-fixturify-project/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Aapp%2Fdependabot)
 
@@ -29,9 +29,57 @@ or install with `Poetry`
 poetry add python-fixturify-project --dev
 ```
 
+## Usage
+
+`python-fixturify-project` is a Python package that provides a way to create dynamic fixtures for your tests.
+
+```python
+from python_fixturify_project import Project
+
+dir_json = {
+    "valid_file.txt": "some text",
+    "nested_dir": {
+        "valid_empty_file.txt": "",
+        "another_nested_empty_dir": {},
+        "another_nested_dir": {
+            "last_nested_empty_dir": {},
+            "final_text_file.txt": "some text",
+        },
+    },
+}
+
+# create a new project with the given directory structure
+with Project(files=dir_json) as p:
+  # add new files to the project, merging with the existing directory structure
+  p.write({
+      "new_file.txt": "some text"
+  })
+
+  # read the actual contents on disc
+  actual_dir_json = p.read()
+```
+
+### Usage when writing tests
+
+`python-fixutrify-project` becomes even more useful when combining it with something like [`syrupy`](https://github.com/tophat/syrupy).
+
+```python
+from python_fixturify_project import Project
+
+
+def test_mutating_project(snapshot):
+    with Project(files=INITIAL_DIR_JSON) as p:
+      mutate_files_for_some_reason(p.base_dir)
+
+      # ensure mutations were as expected
+      assert project.read() == snapshot
+```
+
+## Development
+
 ### Makefile usage
 
-[`Makefile`](https://github.com/scalvert/python-fixturify-project/blob/master/Makefile) contains a lot of functions for faster development.
+[`Makefile`](https://github.com/scalvert/python-fixturify-project/blob/main/Makefile) contains a lot of functions for faster development.
 
 <details>
 <summary>1. Download and remove Poetry</summary>
@@ -183,7 +231,7 @@ Remove docker image with
 make docker-remove
 ```
 
-More information [about docker](https://github.com/scalvert/python-fixturify-project/tree/master/docker).
+More information [about docker](https://github.com/scalvert/python-fixturify-project/tree/main/docker).
 
 </p>
 </details>
@@ -224,32 +272,8 @@ make cleanup
 </p>
 </details>
 
-## 📈 Releases
-
-You can see the list of available releases on the [GitHub Releases](https://github.com/scalvert/python-fixturify-project/releases) page.
-
-We follow [Semantic Versions](https://semver.org/) specification.
-
-We use [`Release Drafter`](https://github.com/marketplace/actions/release-drafter). As pull requests are merged, a draft release is kept up-to-date listing the changes, ready to publish when you’re ready. With the categories option, you can categorize pull requests in release notes using labels.
-
-### List of labels and corresponding titles
-
-|               **Label**               |  **Title in Releases**  |
-| :-----------------------------------: | :---------------------: |
-|       `enhancement`, `feature`        |       🚀 Features       |
-| `bug`, `refactoring`, `bugfix`, `fix` | 🔧 Fixes & Refactoring  |
-|       `build`, `ci`, `testing`        | 📦 Build System & CI/CD |
-|              `breaking`               |   💥 Breaking Changes   |
-|            `documentation`            |    📝 Documentation     |
-|            `dependencies`             | ⬆️ Dependencies updates |
-
-You can update it in [`release-drafter.yml`](https://github.com/scalvert/python-fixturify-project/blob/master/.github/release-drafter.yml).
-
-GitHub creates the `bug`, `enhancement`, and `documentation` labels for you. Dependabot creates the `dependencies` label. Create the remaining labels on the Issues tab of your GitHub repository, when you need them.
-
 ## 🛡 License
 
 [![License](https://img.shields.io/github/license/scalvert/python-fixturify-project)](https://github.com/scalvert/python-fixturify-project/blob/master/LICENSE)
 
 This project is licensed under the terms of the `MIT` license. See [LICENSE](https://github.com/scalvert/python-fixturify-project/blob/master/LICENSE) for more details.
-
