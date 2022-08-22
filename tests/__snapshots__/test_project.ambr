@@ -13,7 +13,7 @@
     'valid_file.txt': 'some text',
   })
 # ---
-# name: test_read
+# name: test_read_recreates_project_from_disc
   dict({
     'nested_dir': dict({
       'another_nested_dir': dict({
@@ -24,6 +24,17 @@
       'another_nested_empty_dir': dict({
       }),
       'valid_empty_file.txt': '',
+    }),
+    'valid_file.txt': 'some text',
+  })
+# ---
+# name: test_read_recreates_project_from_disc_with_similar_filenames
+  dict({
+    'sub': dict({
+      'sub': dict({
+        'valid_file.txt': 'some text',
+      }),
+      'valid_file.txt': 'some text',
     }),
     'valid_file.txt': 'some text',
   })

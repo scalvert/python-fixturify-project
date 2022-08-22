@@ -51,8 +51,26 @@ def test_proper_write_with_cleanup(snapshot):
     assert not path.exists(base_dir)
 
 
-def test_read(snapshot):
+def test_read_recreates_project_from_disc(snapshot):
     with Project(files=GOOD_NESTED_DIRS) as p:
+
+        dir_json = p.read()
+
+        assert dir_json == snapshot
+
+
+def test_read_recreates_project_from_disc_with_similar_filenames(snapshot):
+    files = {
+        "valid_file.txt": "some text",
+        "sub": {
+            "valid_file.txt": "some text",
+            "sub": {
+                "valid_file.txt": "some text",
+            }
+        }
+    }
+
+    with Project(files=files) as p:
 
         dir_json = p.read()
 
