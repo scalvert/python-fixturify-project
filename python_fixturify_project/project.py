@@ -1,16 +1,18 @@
-from functools import reduce
-import glob
-import operator
-import shutil
-import tempfile
-import os
-import json
 from typing import Any, Dict
 
-from dict_path import extract_dict, inject_dict
+import glob
+import json
+import operator
+import os
+import shutil
+import tempfile
+from functools import reduce
 from pathlib import Path
+
+from dict_path import extract_dict, inject_dict
+
 from python_fixturify_project.exceptions import InvalidProjectError
-from python_fixturify_project.path_utils import write_to_file, create_directory
+from python_fixturify_project.path_utils import create_directory, write_to_file
 from python_fixturify_project.utils import deep_merge, keys_exists
 
 
@@ -86,14 +88,14 @@ class Project:
         """Reads the contents of the base_dir to a dict"""
         files: Dict[str, Any] = {}
 
-        for path in glob.iglob(self.base_dir + '**/**', recursive=True):
+        for path in glob.iglob(self.base_dir + "**/**", recursive=True):
             rel_path = os.path.relpath(path, self.base_dir)
 
-            t = 'File' if os.path.isfile(path) else 'Dir'
+            t = "File" if os.path.isfile(path) else "Dir"
             name = os.path.basename(path)
             p = os.path.dirname(path)
 
-            if rel_path == '.':
+            if rel_path == ".":
                 continue
 
             if os.path.isfile(path):
@@ -108,13 +110,13 @@ class Project:
         file = os.path.basename(path)
         dir_name = os.path.dirname(path)
 
-        if dir_name is not "":
+        if dir_name != "":
             self.__add_dir(files, dir_name)[file] = contents
         else:
             files[file] = contents
 
     def __add_dir(self, files, path):
-        if not keys_exists(files, *path.split('/')):
+        if not keys_exists(files, *path.split("/")):
             inject_dict(files, path, {})
 
         return extract_dict(files, path)
