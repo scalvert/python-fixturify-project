@@ -15,11 +15,11 @@ GOOD_SINGLE_FILE: Dict[str, Any] = {"valid_file.txt": "some text"}
 GOOD_NESTED_DIRS: Dict[str, Any] = {
     "valid_file.txt": "some text",
     "nested_dir": {
-        "valid_empty_file": "",
+        "valid_empty_file.txt": "",
         "another_nested_empty_dir": {},
         "another_nested_dir": {
-            "last_nested_empty_dir": None,
-            "final_text_file": "some text",
+            "last_nested_empty_dir": {},
+            "final_text_file.txt": "some text",
         },
     },
 }

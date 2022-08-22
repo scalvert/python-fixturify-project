@@ -1,34 +1,16 @@
+from typing import Any, Dict
+
+import glob
+import os
 import shutil
 import tempfile
 from pathlib import Path
 
+from dict_path import extract_dict, inject_dict
+
 from python_fixturify_project.exceptions import InvalidProjectError
-
-
-def deep_merge(a, b, path=None):
-    "merges b into a"
-    if path is None:
-        path = []
-    for key in b:
-        if key in a:
-            if isinstance(a[key], dict) and isinstance(b[key], dict):
-                deep_merge(a[key], b[key], path + [str(key)])
-            elif a[key] == b[key]:
-                pass  # same leaf value
-            else:
-                raise Exception("Conflict at %s" % ".".join(path + [str(key)]))
-        else:
-            a[key] = b[key]
-    return a
-
-
-def write_to_file(file_path, contents):
-    with open(Path(file_path), "w") as f:
-        f.write(contents)
-
-
-def create_directory(file_path):
-    Path(file_path).mkdir(parents=True, exist_ok=True)
+from python_fixturify_project.path_utils import create_directory, write_to_file
+from python_fixturify_project.utils import deep_merge, keys_exists
 
 
 class Project:
@@ -97,11 +79,43 @@ class Project:
         """Writes the existing files property containing a directory representation to the tmp directory."""
         if dir_json:
             self.merge_files(dir_json)
-        self.write_project()
+        self.__write_project()
 
-    def write_project(self):
+    def read(self):
+        """Reads the contents of the base_dir to a dict"""
+        files: Dict[str, Any] = {}
+
+        for path in glob.iglob(self.base_dir + "**/**", recursive=True):
+            rel_path = os.path.relpath(path, self.base_dir)
+
+            if rel_path == ".":
+                continue
+
+            if os.path.isfile(path):
+                with open(path) as f:
+                    self.__add_file(files, rel_path, f.read())
+            else:
+                self.__add_dir(files, rel_path)
+
+        return files
+
+    def __add_file(self, files, path, contents):
+        file = os.path.basename(path)
+        dir_name = os.path.dirname(path)
+
+        if dir_name != "":
+            self.__add_dir(files, dir_name)[file] = contents
+        else:
+            files[file] = contents
+
+    def __add_dir(self, files, path):
+        if not keys_exists(files, *path.split("/")):
+            inject_dict(files, path, {})
+
+        return extract_dict(files, path)
+
+    def __write_project(self):
         self.__auto_base_dir()
-        self.__write_base_dir()
         self.__write(self.files, self.base_dir)
 
     def __write(self, dir_structure, full_path):
@@ -130,6 +144,3 @@ class Project:
 
             # Reset the original path because Python will still remember the value of `full_path` even after we return from recursion
             full_path = original_dir
-
-    def __write_base_dir(self):
-        create_directory(self.base_dir)
