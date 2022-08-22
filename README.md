@@ -29,7 +29,9 @@ poetry add python-fixturify-project --dev
 
 ## Usage
 
-`python-fixturify-project` is a Python package that provides a way to create dynamic fixtures for your tests.
+`python-fixturify-project` is a Python package that provides a way to create dynamic fixtures for your tests. Fixtures are real directories and files, written to a temporary directory.
+
+```python
 
 ```python
 from python_fixturify_project import Project
