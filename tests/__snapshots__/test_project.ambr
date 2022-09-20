@@ -1,5 +1,10 @@
 # name: test_proper_write_with_cleanup
   dict({
+    '.a_hidden_folder': dict({
+      'nested_dir': dict({
+        '.a_hidden_file': 'some text',
+      }),
+    }),
     'nested_dir': dict({
       'another_nested_dir': dict({
         'final_text_file.txt': 'some text',
@@ -15,6 +20,11 @@
 # ---
 # name: test_read_recreates_project_from_disc
   dict({
+    '.a_hidden_folder': dict({
+      'nested_dir': dict({
+        '.a_hidden_file': 'some text',
+      }),
+    }),
     'nested_dir': dict({
       'another_nested_dir': dict({
         'final_text_file.txt': 'some text',

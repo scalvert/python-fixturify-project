@@ -85,13 +85,13 @@ class Project:
         """Reads the contents of the base_dir to a dict"""
         files: Dict[str, Any] = {}
 
-        for path in glob.iglob(self.base_dir + "**/**", recursive=True):
-            rel_path = os.path.relpath(path, self.base_dir)
+        for path in Path(self.base_dir).rglob("*"):
+            rel_path = path.relative_to(self.base_dir)
 
-            if rel_path == ".":
+            if str(rel_path) == ".":
                 continue
 
-            if os.path.isfile(path):
+            if path.is_file():
                 with open(path) as f:
                     self.__add_file(files, rel_path, f.read())
             else:
@@ -109,6 +109,7 @@ class Project:
             files[file] = contents
 
     def __add_dir(self, files, path):
+        path = str(path)
         if not keys_exists(files, *path.split("/")):
             inject_dict(files, path, {})
 
