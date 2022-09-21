@@ -13,6 +13,11 @@ BAD_EMPTY_NAME: Dict[str, Any] = {
 GOOD_SINGLE_FILE: Dict[str, Any] = {"valid_file.txt": "some text"}
 
 GOOD_NESTED_DIRS: Dict[str, Any] = {
+    ".a_hidden_folder": {
+        "nested_dir": {
+            ".a_hidden_file": "some text",
+        },
+    },
     "valid_file.txt": "some text",
     "nested_dir": {
         "valid_empty_file.txt": "",
