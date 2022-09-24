@@ -77,6 +77,14 @@ jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
+name = "bracex"
+version = "2.3.post1"
+description = "Bash style brace expander."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "certifi"
 version = "2022.9.14"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -619,8 +627,8 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
 [[package]]
 name = "syrupy"
-version = "3.0.0"
-description = "PyTest Snapshot Test Utility"
+version = "3.0.2"
+description = "Pytest Snapshot Test Utility"
 category = "dev"
 optional = false
 python-versions = ">=3.7,<4"
@@ -701,6 +709,17 @@ docs = ["proselint (>=0.13)", "sphinx (>=5.1.1)", "sphinx-argparse (>=0.3.1)", "
 testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=21.3)", "pytest (>=7.0.1)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.2)", "pytest-mock (>=3.6.1)", "pytest-randomly (>=3.10.3)", "pytest-timeout (>=2.1)"]
 
 [[package]]
+name = "wcmatch"
+version = "8.4.1"
+description = "Wildcard/glob file name matcher."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+bracex = ">=2.1.1"
+
+[[package]]
 name = "wrapt"
 version = "1.14.1"
 description = "Module for decorators, wrappers and monkey patching."
@@ -723,7 +742,7 @@ docs = ["jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "jaraco.packaging (>=9)
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "362be0870a9acd9ebc5d1a8af771e719cf5409249a97ad7a4850b6e14b957d78"
+content-hash = "fefb5a42d2f49a231ab961b179ba13f3dcf3059bf87e3e36fb45a5b547ba27aa"
 
 [metadata.files]
 astroid = []
@@ -731,6 +750,7 @@ atomicwrites = []
 attrs = []
 bandit = []
 black = []
+bracex = []
 certifi = []
 cfgv = []
 charset-normalizer = []
@@ -786,5 +806,6 @@ typed-ast = []
 typing-extensions = []
 urllib3 = []
 virtualenv = []
+wcmatch = []
 wrapt = []
 zipp = []
