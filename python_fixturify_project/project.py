@@ -4,10 +4,9 @@ import glob
 import os
 import shutil
 import tempfile
-from re import compile, fullmatch
 
 from dict_path import extract_dict, inject_dict
-from wcmatch.pathlib import DOTGLOB, GLOBSTAR, NEGATE, NEGATEALL, NODOTDIR, Path
+from wcmatch.pathlib import DOTGLOB, GLOBSTAR, Path
 
 from python_fixturify_project.exceptions import InvalidProjectError
 from python_fixturify_project.path_utils import create_directory, write_to_file
