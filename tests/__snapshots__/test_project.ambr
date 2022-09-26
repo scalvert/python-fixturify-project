@@ -18,6 +18,16 @@
     'valid_file.txt': 'some text',
   })
 # ---
+# name: test_read_ignore_files
+  dict({
+    '.github': dict({
+      'do_not_ignore_me': dict({
+        'a_file': 'some text',
+      }),
+    }),
+    'do_not_ignore_me': 'some text',
+  })
+# ---
 # name: test_read_recreates_project_from_disc
   dict({
     '.a_hidden_folder': dict({

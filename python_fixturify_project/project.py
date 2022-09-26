@@ -4,9 +4,9 @@ import glob
 import os
 import shutil
 import tempfile
-from pathlib import Path
 
 from dict_path import extract_dict, inject_dict
+from wcmatch.pathlib import DOTGLOB, GLOBSTAR, Path
 
 from python_fixturify_project.exceptions import InvalidProjectError
 from python_fixturify_project.path_utils import create_directory, write_to_file
@@ -81,11 +81,13 @@ class Project:
             self.merge_files(dir_json)
         self.__write_project()
 
-    def read(self):
-        """Reads the contents of the base_dir to a dict"""
+    def read(self, ignore_patterns=["**/.git", "**/.git/*"]):
+        """Reads the contents of the base_dir to a dict and ignores any files/dirs matched by the glob expressions"""
         files: Dict[str, Any] = {}
 
-        for path in Path(self.base_dir).rglob("*"):
+        for path in Path(self.base_dir).rglob(
+            "*", exclude=ignore_patterns, flags=DOTGLOB | GLOBSTAR
+        ):
             rel_path = path.relative_to(self.base_dir)
 
             if str(rel_path) == ".":
