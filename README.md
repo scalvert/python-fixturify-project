@@ -80,7 +80,7 @@ files = {
 
 with Project(files=files) as p:
 
-    dir_json = p.read(ignore_patterns=["**/.git", "**/.git/*", "**/ignore_me"])  # Default is ["**/.git", "**/.git/*"]
+    dir_json = p.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])  # Default is ["**/.git", "**/.git/**"]
 
 assert dir_json == {
     '.github': {

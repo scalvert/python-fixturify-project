@@ -81,7 +81,7 @@ class Project:
             self.merge_files(dir_json)
         self.__write_project()
 
-    def read(self, ignore_patterns=["**/.git", "**/.git/*"]):
+    def read(self, ignore_patterns=["**/.git", "**/.git/**"]):
         """Reads the contents of the base_dir to a dict and ignores any files/dirs matched by the glob expressions"""
         files: Dict[str, Any] = {}
 
