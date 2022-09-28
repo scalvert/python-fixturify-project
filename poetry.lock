@@ -86,7 +86,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "certifi"
-version = "2022.9.14"
+version = "2022.9.24"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "dev"
 optional = false
@@ -548,7 +548,7 @@ pytest = ">=3.0.0,<8.0.0"
 
 [[package]]
 name = "pyupgrade"
-version = "2.38.0"
+version = "2.38.2"
 description = "A tool to automatically upgrade syntax for newer versions."
 category = "dev"
 optional = false
