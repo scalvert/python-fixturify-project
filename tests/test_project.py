@@ -35,6 +35,22 @@ def test_cleanup_dir():
     assert not path.exists(base_dir)
 
 
+def test_get_from_files(snapshot):
+    project = Project(files={
+        'one.py': '# some python',
+        'dir': {
+            'two.py': '# another python',
+            'dir2': {
+                'three.py': '# and this makes 3!!!'
+            }
+        }
+    })
+
+    assert project.get('one.py') == snapshot(name='one.py')
+    assert project.get('dir') == snapshot(name='dir')
+    assert project.get('dir/dir2') == snapshot(name='dir2')
+
+
 @pytest.mark.parametrize("test_input", [BAD_DIR_NAME, BAD_EMPTY_NAME])
 def test_improper_write(test_input):
     with pytest.raises(InvalidProjectError):

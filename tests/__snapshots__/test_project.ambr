@@ -1,3 +1,19 @@
+# name: test_get_from_files[dir2]
+  dict({
+    'three.py': '# and this makes 3!!!',
+  })
+# ---
+# name: test_get_from_files[dir]
+  dict({
+    'dir2': dict({
+      'three.py': '# and this makes 3!!!',
+    }),
+    'two.py': '# another python',
+  })
+# ---
+# name: test_get_from_files[one.py]
+  '# some python'
+# ---
 # name: test_proper_write_with_cleanup
   dict({
     '.a_hidden_folder': dict({

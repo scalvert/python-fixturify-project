@@ -99,6 +99,9 @@ class Project:
 
         return files
 
+    def get(self, object_path: str):
+        return extract_dict(self._files, object_path)
+
     def __add_file(self, files, path, contents):
         file = os.path.basename(path)
         dir_name = os.path.dirname(path)
