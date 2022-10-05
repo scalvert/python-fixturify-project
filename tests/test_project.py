@@ -15,6 +15,11 @@ def test_project():
     assert isinstance(project, Project)
 
 
+def test_project_has_base_dir_on_instantiation():
+    project = Project()
+    assert type(project.base_dir) is str
+
+
 def test_cleanup_dir():
     # Given
     project = Project()
