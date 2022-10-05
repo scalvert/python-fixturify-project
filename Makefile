@@ -43,6 +43,9 @@ test:
 	PYTHONPATH=$(PYTHONPATH) poetry run pytest -c pyproject.toml --cov-report=html --cov=python_fixturify_project tests/
 	poetry run coverage-badge -o assets/images/coverage.svg -f
 
+update-snapshot:
+		PYTHONPATH=$(PYTHONPATH) poetry run pytest --snapshot-update -c pyproject.toml tests/
+
 .PHONY: check-codestyle
 check-codestyle:
 	poetry run isort --diff --check-only --settings-path pyproject.toml ./

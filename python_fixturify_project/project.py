@@ -18,9 +18,7 @@ class Project:
         self._base_dir = base_dir
         self._files = files or {}
 
-        # If the user passed in a file structure on init, then short-circuit to the `write`
-        if self._files != None:
-            self.write(self._files)
+        self.write(self._files)
 
     def __del__(self):
         # Ensure we clean up the temp dir structure on delete
@@ -100,6 +98,9 @@ class Project:
                 self.__add_dir(files, rel_path)
 
         return files
+
+    def get(self, object_path: str):
+        return extract_dict(self._files, object_path)
 
     def __add_file(self, files, path, contents):
         file = os.path.basename(path)
