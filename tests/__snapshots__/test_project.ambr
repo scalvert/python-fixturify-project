@@ -1,3 +1,25 @@
+# name: test_get_files_after_copy
+  dict({
+    'dir': dict({
+      'dir2': dict({
+        'three.py': '# and this makes 3!!!',
+      }),
+      'two.py': '# another python',
+    }),
+    'one.py': '# some python',
+  })
+# ---
+# name: test_get_from_copied_files
+  dict({
+    'dir': dict({
+      'dir2': dict({
+        'three.py': '# and this makes 3!!!',
+      }),
+      'two.py': '# another python',
+    }),
+    'one.py': '# some python',
+  })
+# ---
 # name: test_get_from_files[dir2]
   dict({
     'three.py': '# and this makes 3!!!',

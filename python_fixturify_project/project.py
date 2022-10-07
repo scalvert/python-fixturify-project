@@ -52,6 +52,9 @@ class Project:
     @property
     def files(self):
         """Gets the files containing the project's directory structure."""
+        if not self._files:
+            self._files = self.read()
+
         return self._files
 
     @files.setter
@@ -97,9 +100,14 @@ class Project:
             else:
                 self.__add_dir(files, rel_path)
 
+        self._files = files
+
         return files
 
     def get(self, object_path: str):
+        if self._files == {}:
+            self._files = self.read()
+
         return extract_dict(self._files, object_path)
 
     def __add_file(self, files, path, contents):
