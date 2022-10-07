@@ -1,11 +1,11 @@
 """Tests for Project class."""
+from distutils.dir_util import copy_tree
 from os import path
 from pathlib import Path
-from deepdiff import DeepDiff
-from distutils.dir_util import copy_tree
 
 import pytest
 from conftest import BAD_DIR_NAME, BAD_EMPTY_NAME, GOOD_NESTED_DIRS, GOOD_SINGLE_FILE
+from deepdiff import DeepDiff
 
 from python_fixturify_project.exceptions import InvalidProjectError
 from python_fixturify_project.project import Project
@@ -90,7 +90,6 @@ def test_get_from_copied_files(snapshot):
 
     assert project2.files == snapshot
     assert DeepDiff(project1.files, project2.files) == {}
-
 
 
 @pytest.mark.parametrize("test_input", [BAD_DIR_NAME, BAD_EMPTY_NAME])
