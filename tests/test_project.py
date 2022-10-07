@@ -1,6 +1,8 @@
 """Tests for Project class."""
 from os import path
 from pathlib import Path
+from deepdiff import DeepDiff
+from distutils.dir_util import copy_tree
 
 import pytest
 from conftest import BAD_DIR_NAME, BAD_EMPTY_NAME, GOOD_NESTED_DIRS, GOOD_SINGLE_FILE
@@ -35,6 +37,24 @@ def test_cleanup_dir():
     assert not path.exists(base_dir)
 
 
+def test_get_files_after_copy(snapshot):
+    project1 = Project(
+        files={
+            "one.py": "# some python",
+            "dir": {
+                "two.py": "# another python",
+                "dir2": {"three.py": "# and this makes 3!!!"},
+            },
+        }
+    )
+
+    project2 = Project()
+
+    copy_tree(project1.base_dir, project2.base_dir)
+
+    assert project2.files == snapshot
+
+
 def test_get_from_files(snapshot):
     project = Project(
         files={
@@ -49,6 +69,28 @@ def test_get_from_files(snapshot):
     assert project.get("one.py") == snapshot(name="one.py")
     assert project.get("dir") == snapshot(name="dir")
     assert project.get("dir/dir2") == snapshot(name="dir2")
+
+
+def test_get_from_copied_files(snapshot):
+    project1 = Project(
+        files={
+            "one.py": "# some python",
+            "dir": {
+                "two.py": "# another python",
+                "dir2": {"three.py": "# and this makes 3!!!"},
+            },
+        }
+    )
+
+    project2 = Project()
+
+    copy_tree(project1.base_dir, project2.base_dir)
+
+    project2.get("one.py")
+
+    assert project2.files == snapshot
+    assert DeepDiff(project1.files, project2.files) == {}
+
 
 
 @pytest.mark.parametrize("test_input", [BAD_DIR_NAME, BAD_EMPTY_NAME])
