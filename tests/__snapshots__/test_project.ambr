@@ -36,7 +36,7 @@
 # name: test_get_from_files[one.py]
   '# some python'
 # ---
-# name: test_proper_write_with_cleanup
+# name: test_proper_write_with_dispose
   dict({
     '.a_hidden_folder': dict({
       'nested_dir': dict({

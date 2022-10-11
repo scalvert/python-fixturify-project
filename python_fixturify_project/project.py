@@ -22,17 +22,7 @@ class Project:
 
     def __del__(self):
         # Ensure we clean up the temp dir structure on delete
-        self.__exit__()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        try:
-            shutil.rmtree(self.base_dir)
-        except FileNotFoundError:
-            # No need to do anything, file structure has already been cleaned up!
-            pass
+        self.dispose()
 
     @property
     def base_dir(self):
@@ -66,6 +56,13 @@ class Project:
     def files(self):
         """Deletes the files corresponding to the project's directory structure."""
         del self._files
+
+    def dispose(self):
+        try:
+            shutil.rmtree(self.base_dir)
+        except FileNotFoundError:
+            # No need to do anything, file structure has already been cleaned up!
+            pass
 
     def __auto_base_dir(self):
         """Creates and sets the base_dir if not explicitly configured during init"""

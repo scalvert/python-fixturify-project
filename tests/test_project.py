@@ -1,4 +1,3 @@
-"""Tests for Project class."""
 from distutils.dir_util import copy_tree
 from os import path
 from pathlib import Path
@@ -23,17 +22,14 @@ def test_project_has_base_dir_on_instantiation():
 
 
 def test_cleanup_dir():
-    # Given
     project = Project()
     project.write(GOOD_SINGLE_FILE)
     base_dir = project.base_dir
 
     assert path.exists(base_dir) and path.isdir(base_dir)
 
-    # When
     del project
 
-    # Then
     assert not path.exists(base_dir)
 
 
@@ -99,26 +95,28 @@ def test_improper_write(test_input):
         project.write(test_input)
 
 
-def test_proper_write_with_cleanup(snapshot):
+def test_proper_write_with_dispose(snapshot):
     base_dir = None
 
-    with Project(files=GOOD_NESTED_DIRS) as p:
-        base_dir = p.base_dir
+    project = Project(files=GOOD_NESTED_DIRS)
 
-        assert path.exists(base_dir) and path.isdir(base_dir)
+    base_dir = project.base_dir
 
-        assert p.read() == snapshot
+    assert path.exists(base_dir) and path.isdir(base_dir)
 
-    # Ensure cleanup happened
+    assert project.read() == snapshot
+
+    project.dispose()
+
     assert not path.exists(base_dir)
 
 
 def test_read_recreates_project_from_disc(snapshot):
-    with Project(files=GOOD_NESTED_DIRS) as p:
+    project = Project(files=GOOD_NESTED_DIRS)
 
-        dir_json = p.read()
+    dir_json = project.read()
 
-        assert dir_json == snapshot
+    assert dir_json == snapshot
 
 
 def test_read_recreates_project_from_disc_with_similar_filenames(snapshot):
@@ -132,11 +130,11 @@ def test_read_recreates_project_from_disc_with_similar_filenames(snapshot):
         },
     }
 
-    with Project(files=files) as p:
+    project = Project(files=files)
 
-        dir_json = p.read()
+    dir_json = project.read()
 
-        assert dir_json == snapshot
+    assert dir_json == snapshot
 
 
 def test_read_ignore_files(snapshot):
@@ -147,8 +145,8 @@ def test_read_ignore_files(snapshot):
         "do_not_ignore_me": "some text",
     }
 
-    with Project(files=files) as p:
+    project = Project(files=files)
 
-        dir_json = p.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])
+    dir_json = project.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])
 
-        assert dir_json == snapshot
+    assert dir_json == snapshot
