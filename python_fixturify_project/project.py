@@ -12,11 +12,14 @@ from python_fixturify_project.exceptions import InvalidProjectError
 from python_fixturify_project.path_utils import create_directory, write_to_file
 from python_fixturify_project.utils import deep_merge, keys_exists
 
+DEFAULT_IGNORE_PATTERNS = ["**/.git", "**/.git/**"]
+
 
 class Project:
-    def __init__(self, base_dir=None, files=None):
+    def __init__(self, base_dir=None, files=None, ignore_patterns=[]):
         self._base_dir = base_dir
         self._files = files or {}
+        self._ignore_patterns = DEFAULT_IGNORE_PATTERNS + ignore_patterns
 
         self.write(self._files)
 
@@ -79,12 +82,12 @@ class Project:
             self.merge_files(dir_json)
         self.__write_project()
 
-    def read(self, ignore_patterns=["**/.git", "**/.git/**"]):
+    def read(self):
         """Reads the contents of the base_dir to a dict and ignores any files/dirs matched by the glob expressions"""
         files: Dict[str, Any] = {}
 
         for path in Path(self.base_dir).rglob(
-            "*", exclude=ignore_patterns, flags=DOTGLOB | GLOBSTAR
+            "*", exclude=self._ignore_patterns, flags=DOTGLOB | GLOBSTAR
         ):
             rel_path = path.relative_to(self.base_dir)
 

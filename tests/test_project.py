@@ -145,8 +145,8 @@ def test_read_ignore_files(snapshot):
         "do_not_ignore_me": "some text",
     }
 
-    project = Project(files=files)
+    project = Project(files=files, ignore_patterns=["**/ignore_me"])
 
-    dir_json = project.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])
+    dir_json = project.read()
 
     assert dir_json == snapshot
