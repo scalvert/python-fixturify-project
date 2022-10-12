@@ -16,8 +16,8 @@ DEFAULT_IGNORE_PATTERNS = ["**/.git", "**/.git/**"]
 
 
 class Project:
-    def __init__(self, base_dir=None, files=None, ignore_patterns=[]):
-        self._base_dir = base_dir
+    def __init__(self, files=None, ignore_patterns=[]):
+        self._base_dir = ""
         self._files = files or {}
         self._ignore_patterns = DEFAULT_IGNORE_PATTERNS + ignore_patterns
 
@@ -30,11 +30,19 @@ class Project:
     @property
     def base_dir(self):
         """Gets the base directory path, usually a tmp directory unless a baseDir has been explicitly set."""
+        if self._base_dir == "":
+            raise Exception(
+                "Project has no base_dir yet. Either set one manually or call write to have one chosen for you."
+            )
+
         return self._base_dir
 
     @base_dir.setter
     def base_dir(self, value):
         """Sets the base directory of the project."""
+        if self._base_dir != "":
+            raise Exception("Project already has a base_dir")
+
         self._base_dir = value
 
     @base_dir.deleter
@@ -62,15 +70,15 @@ class Project:
 
     def dispose(self):
         try:
-            shutil.rmtree(self.base_dir)
+            shutil.rmtree(self._base_dir)
         except FileNotFoundError:
             # No need to do anything, file structure has already been cleaned up!
             pass
 
     def __auto_base_dir(self):
         """Creates and sets the base_dir if not explicitly configured during init"""
-        if not self.base_dir:
-            self.base_dir = tempfile.mkdtemp()
+        if not self._base_dir:
+            self._base_dir = tempfile.mkdtemp()
 
     def merge_files(self, dir_json):
         """Merges an object containing a directory represention with the existing files."""
@@ -80,6 +88,7 @@ class Project:
         """Writes the existing files property containing a directory representation to the tmp directory."""
         if dir_json:
             self.merge_files(dir_json)
+
         self.__write_project()
 
     def read(self):
@@ -104,7 +113,7 @@ class Project:
 
         return files
 
-    def get(self, object_path: str):
+    def get(self, object_path):
         if self._files == {}:
             self._files = self.read()
 
