@@ -139,29 +139,30 @@ class Project:
         self.__auto_base_dir()
         self.__write(self.files, self.base_dir)
 
-    def __write(self, dir_structure, full_path):
+    def __write(self, files, full_path):
         """Recursive write helper function. Does the bulk of the work in terms of writing the directory structure"""
-        # Base case
-        if not dir_structure or not isinstance(dir_structure, dict):
+        if not files or not isinstance(files, dict):
             return
 
-        # Save the original path
         original_dir = Path(full_path)
-        for entry in dir_structure:
+
+        for entry in files:
             full_path = Path(full_path, entry)
+
             if not isinstance(entry, str) or entry == "":
                 raise InvalidProjectError(
                     "Invalid directory structure given. Each key must be a non-empty string"
                 )
-            if isinstance(dir_structure[entry], str):  # This is a file
-                write_to_file(full_path, dir_structure[entry])
+
+            if isinstance(files[entry], str):
+                write_to_file(full_path, files[entry])
             else:
                 if entry == "." or entry == "..":
                     raise InvalidProjectError('Directory entry must not be "." or ".."')
 
                 create_directory(full_path)
                 # Our recursion step, which should only happen if we find ourselves a nested directory
-                self.__write(dir_structure=dir_structure[entry], full_path=full_path)
+                self.__write(files=files[entry], full_path=full_path)
 
             # Reset the original path because Python will still remember the value of `full_path` even after we return from recursion
             full_path = original_dir
