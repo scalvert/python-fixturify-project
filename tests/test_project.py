@@ -100,9 +100,7 @@ def test_multiple_writes_correctly_merges(snapshot):
 
     assert project.files == snapshot(name="original_files")
 
-    project.write({
-        'another.py': 'Yet another!!!'
-    })
+    project.write({"another.py": "Yet another!!!"})
 
     assert project.files == snapshot(name="merged_files")
 

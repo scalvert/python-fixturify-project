@@ -75,11 +75,6 @@ class Project:
             # No need to do anything, file structure has already been cleaned up!
             pass
 
-    def __auto_base_dir(self):
-        """Creates and sets the base_dir if not explicitly configured during init"""
-        if not self._base_dir:
-            self._base_dir = tempfile.mkdtemp()
-
     def merge_files(self, dir_json):
         """Merges an object containing a directory represention with the existing files."""
         self.files = deep_merge(self.files, dir_json)
@@ -118,6 +113,11 @@ class Project:
             self._files = self.read()
 
         return extract_dict(self._files, object_path)
+
+    def __auto_base_dir(self):
+        """Creates and sets the base_dir if not explicitly configured during init"""
+        if not self._base_dir:
+            self._base_dir = tempfile.mkdtemp()
 
     def __add_file(self, files, path, contents):
         file = os.path.basename(path)
