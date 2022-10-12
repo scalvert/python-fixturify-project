@@ -47,19 +47,19 @@ dir_json = {
 }
 
 # create a new project with the given directory structure
-with Project(files=dir_json) as p:
-  # add new files to the project, merging with the existing directory structure
-  p.write({
-      "new_file.txt": "some text"
-  })
+project = Project(files=dir_json)
+# add new files to the project, merging with the existing directory structure
+p.write({
+    "new_file.txt": "some text"
+})
 
-  # read the actual contents on disc
-  actual_dir_json = p.read()
+# read the actual contents on disc
+actual_dir_json = p.read()
 ```
 
 ### Ignore Files
 
-By default, the `read()` function will ignore all `.git` directories in your Project file structure. This can be overridden by using the `ignore_patterns` function parameter, which
+By default, the `read()` function will ignore all hidden files and directories in your Project file structure. This can be overridden by using the `ignore_patterns` function parameter, which
 takes a list of glob pattern strings. This may be slightly confusing, as glob patterns are normally used in an ***inclusive*** manner when performing file-system searches, however any patterns
 provided to the `ignore_patterns` parameter will be used in an ***exclusive*** manner. For example:
 
@@ -78,9 +78,9 @@ files = {
     "do_not_ignore_me": "some text",
 }
 
-with Project(files=files) as p:
+project = Project(files=files)
 
-    dir_json = p.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])  # Default is ["**/.git", "**/.git/**"]
+dir_json = project.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])  # Default is ["**/.git", "**/.git/**"]
 
 assert dir_json == {
     '.github': {
@@ -101,11 +101,12 @@ from python_fixturify_project import Project
 
 
 def test_mutating_project(snapshot):
-    with Project(files=INITIAL_DIR_JSON) as p:
-      mutate_files_for_some_reason(p.base_dir)
+    project = Project(files=INITIAL_DIR_JSON)
 
-      # ensure mutations were as expected
-      assert project.read() == snapshot
+    mutate_files_for_some_reason(p.base_dir)
+
+    # ensure mutations were as expected
+    assert project.read() == snapshot
 ```
 
 Or you can use the `project.get` method to get the path to a file in the project.
@@ -114,11 +115,12 @@ Or you can use the `project.get` method to get the path to a file in the project
 from python_fixturify_project import Project
 
 def test_mutating_project(snapshot):
-    with Project(files=INITIAL_DIR_JSON) as p:
-      mutate_files_for_some_reason(p.base_dir)
+    project = Project(files=INITIAL_DIR_JSON)
 
-      # ensure mutations were as  for single file
-      assert project.get('path/to/a/file.py') == snapshot(name='path/to/a/file.py')
+    mutate_files_for_some_reason(p.base_dir)
+
+    # ensure mutations were as  for single file
+    assert project.get('path/to/a/file.py') == snapshot(name='path/to/a/file.py')
 ```
 
 ## 🛡 License
