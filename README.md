@@ -101,11 +101,12 @@ from python_fixturify_project import Project
 
 
 def test_mutating_project(snapshot):
-    with Project(files=INITIAL_DIR_JSON) as p:
-      mutate_files_for_some_reason(p.base_dir)
+    project = Project(files=INITIAL_DIR_JSON)
 
-      # ensure mutations were as expected
-      assert project.read() == snapshot
+    mutate_files_for_some_reason(p.base_dir)
+
+    # ensure mutations were as expected
+    assert project.read() == snapshot
 ```
 
 Or you can use the `project.get` method to get the path to a file in the project.
@@ -114,11 +115,12 @@ Or you can use the `project.get` method to get the path to a file in the project
 from python_fixturify_project import Project
 
 def test_mutating_project(snapshot):
-    with Project(files=INITIAL_DIR_JSON) as p:
-      mutate_files_for_some_reason(p.base_dir)
+    project = Project(files=INITIAL_DIR_JSON)
 
-      # ensure mutations were as  for single file
-      assert project.get('path/to/a/file.py') == snapshot(name='path/to/a/file.py')
+    mutate_files_for_some_reason(p.base_dir)
+
+    # ensure mutations were as  for single file
+    assert project.get('path/to/a/file.py') == snapshot(name='path/to/a/file.py')
 ```
 
 ## 🛡 License

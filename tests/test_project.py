@@ -95,6 +95,18 @@ def test_improper_write(test_input):
         project.write(test_input)
 
 
+def test_multiple_writes_correctly_merges(snapshot):
+    project = Project(files=GOOD_NESTED_DIRS)
+
+    assert project.files == snapshot(name="original_files")
+
+    project.write({
+        'another.py': 'Yet another!!!'
+    })
+
+    assert project.files == snapshot(name="merged_files")
+
+
 def test_proper_write_with_dispose(snapshot):
     base_dir = None
 
