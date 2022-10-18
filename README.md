@@ -59,9 +59,8 @@ actual_dir_json = p.read()
 
 ### Ignore Files
 
-By default, the `read()` function will ignore all hidden files and directories in your Project file structure. This can be overridden by using the `ignore_patterns` function parameter, which
-takes a list of glob pattern strings. This may be slightly confusing, as glob patterns are normally used in an ***inclusive*** manner when performing file-system searches, however any patterns
-provided to the `ignore_patterns` parameter will be used in an ***exclusive*** manner. For example:
+By default, the `read()` function will ignore all hidden files and directories in your Project file structure. This can be overridden by using the `ignore_patterns` constructor argument, which
+takes a list of glob pattern strings. Any patterns provided to the `ignore_patterns` argument will be used in an _exclusive_ manner. For example:
 
 ```python
 files = {
@@ -78,11 +77,12 @@ files = {
     "do_not_ignore_me": "some text",
 }
 
-project = Project(files=files)
+# Default ignore_patterns is ["**/.git", "**/.git/**"]
+project = Project(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])
 
-dir_json = project.read(ignore_patterns=["**/.git", "**/.git/**", "**/ignore_me"])  # Default is ["**/.git", "**/.git/**"]
+project.write(files)
 
-assert dir_json == {
+assert project.read() == {
     '.github': {
         'do_not_ignore_me': {
             'a_file': 'some text',
@@ -92,21 +92,51 @@ assert dir_json == {
 }
 ```
 
-### Usage when writing tests
+### Recommended Usage Patterns
 
-`python-fixutrify-project` becomes even more useful when combining it with something like [`syrupy`](https://github.com/tophat/syrupy).
+`python-fixutrify-project` becomes even more useful when combining it with tools like `pytest` and something like [`syrupy`](https://github.com/tophat/syrupy), which uses `jest`-like snapshots for testing. The example below combines `python-fixturify-project` with `pytest`'s fixtures, and  `syrupy` to create a snapshot test.
+
+First, we define a fixture to setup and teardown our `Project` instance:
+
+```python
+# conftest.py
+import pytest
+
+from python_fixturify_project import Project
+
+
+@pytest.fixture
+def project():
+    project = Project()
+
+    yield project
+
+    project.dispose()
+```
+
+This fixture uses `pytest`'s `yield` fixture pattern, which allows us to run some code after the test has completed. In this case, we use the `dispose()` method to remove the temporary directory created by `python-fixturify-project`.
 
 ```python
 from python_fixturify_project import Project
 
 
-def test_mutating_project(snapshot):
-    project = Project(files=INITIAL_DIR_JSON)
+def test_mutating_project(project, snapshot):
+    project.write({
+        "a_file.txt": "some text",
+        "a_dir": {
+            "another_file.txt": "some text",
+        },
+        "path": {
+            "to": {
+                "a_file.py": "# some python code",
+            },
+        },
+    })
 
     mutate_files_for_some_reason(p.base_dir)
 
     # ensure mutations were as expected
-    assert project.read() == snapshot
+    assert project.files == snapshot
 ```
 
 Or you can use the `project.get` method to get the path to a file in the project.
@@ -115,12 +145,22 @@ Or you can use the `project.get` method to get the path to a file in the project
 from python_fixturify_project import Project
 
 def test_mutating_project(snapshot):
-    project = Project(files=INITIAL_DIR_JSON)
+    project.write({
+        "a_file.txt": "some text",
+        "a_dir": {
+            "another_file.txt": "some text",
+        },
+        "path": {
+            "to": {
+                "a_file.py": "# some python code",
+            },
+        },
+    })
 
     mutate_files_for_some_reason(p.base_dir)
 
     # ensure mutations were as  for single file
-    assert project.get('path/to/a/file.py') == snapshot(name='path/to/a/file.py')
+    assert project.get('path/to/a_file.py') == snapshot(name='path/to/a_file.py')
 ```
 
 ## 🛡 License
