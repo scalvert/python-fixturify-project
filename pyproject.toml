@@ -36,7 +36,7 @@ python = "^3.8"
 importlib_metadata = {version = "^4.5.0", python = "<3.8"}
 dict-path = "^1.0.1"
 wcmatch = "^8.4.1"
-deepdiff = "^5.8.1"
+deepdiff = ">=5.8.1,<7.0.0"
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.1"
 black = {version = "^22.8.0", allow-prereleases = true}
