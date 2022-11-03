@@ -674,7 +674,7 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
 [[package]]
 name = "syrupy"
-version = "3.0.2"
+version = "3.0.3"
 description = "Pytest Snapshot Test Utility"
 category = "dev"
 optional = false
@@ -776,7 +776,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "13ff641903fc24ddf9da2583e413fe6d3c51cdbabdd7077c5cf39d49973dda50"
+content-hash = "130488f0611ec260ab0c0d979eef3a9cabadb6d14c78dabb2bd452bf34e4c0f4"
 
 [metadata.files]
 astroid = [
@@ -1197,8 +1197,8 @@ stevedore = [
     {file = "stevedore-3.5.0.tar.gz", hash = "sha256:f40253887d8712eaa2bb0ea3830374416736dc8ec0e22f5a65092c1174c44335"},
 ]
 syrupy = [
-    {file = "syrupy-3.0.2-py3-none-any.whl", hash = "sha256:b7afb1424ddbdbfba6c7340fd7b939dd129879f891172dd2e59ec971fb40c60d"},
-    {file = "syrupy-3.0.2.tar.gz", hash = "sha256:5425a23f816743227542c91c83d2bf0847f029284236f8c30e10147bdde4f80e"},
+    {file = "syrupy-3.0.3-py3-none-any.whl", hash = "sha256:46e87a184a7e24dfd0af0e7736198012a1351dc24ac834c6bed8453bf4a5a876"},
+    {file = "syrupy-3.0.3.tar.gz", hash = "sha256:fd19ddaa806d437586581c94276932f1a156d485dd06d3ee762a93b1a6f7d3b2"},
 ]
 tokenize-rt = [
     {file = "tokenize_rt-4.2.1-py2.py3-none-any.whl", hash = "sha256:08a27fa032a81cf45e8858d0ac706004fcd523e8463415ddf1442be38e204ea8"},
