@@ -77,6 +77,26 @@
     'valid_file.txt': 'some text',
   })
 # ---
+# name: test_proper_write
+  dict({
+    '.a_hidden_folder': dict({
+      'nested_dir': dict({
+        '.a_hidden_file': 'some text',
+      }),
+    }),
+    'nested_dir': dict({
+      'another_nested_dir': dict({
+        'final_text_file.txt': 'some text',
+        'last_nested_empty_dir': dict({
+        }),
+      }),
+      'another_nested_empty_dir': dict({
+      }),
+      'valid_empty_file.txt': '',
+    }),
+    'valid_file.txt': 'some text',
+  })
+# ---
 # name: test_proper_write_with_dispose
   dict({
     '.a_hidden_folder': dict({

@@ -1,6 +1,7 @@
-from typing import Any, Dict
+from __future__ import annotations
 
-import glob
+from typing import Dict, List, Union, cast
+
 import os
 import shutil
 import tempfile
@@ -14,12 +15,16 @@ from python_fixturify_project.utils import deep_merge, keys_exists
 
 DEFAULT_IGNORE_PATTERNS = ["**/.git", "**/.git/**"]
 
+DirJSON = Dict[str, Union["DirJSON", str, None]]
+
 
 class Project:
-    def __init__(self, files=None, ignore_patterns=[]):
+    """Represents a project directory structure."""
+
+    def __init__(self, files: DirJSON | None = None, ignore_patterns: List[str] = []):
         self._base_dir = ""
         self._files = files or {}
-        self._ignore_patterns = DEFAULT_IGNORE_PATTERNS + ignore_patterns
+        self._ignore_patterns = DEFAULT_IGNORE_PATTERNS + (ignore_patterns or [])
 
         self.write(self._files)
 
@@ -28,7 +33,7 @@ class Project:
         self.dispose()
 
     @property
-    def base_dir(self):
+    def base_dir(self) -> str:
         """Gets the base directory path, usually a tmp directory unless a baseDir has been explicitly set."""
         if self._base_dir == "":
             raise Exception(
@@ -38,7 +43,7 @@ class Project:
         return self._base_dir
 
     @base_dir.setter
-    def base_dir(self, value):
+    def base_dir(self, value: str) -> None:
         """Sets the base directory of the project."""
         if self._base_dir != "":
             raise Exception("Project already has a base_dir")
@@ -46,12 +51,12 @@ class Project:
         self._base_dir = value
 
     @base_dir.deleter
-    def base_dir(self):
+    def base_dir(self) -> None:
         """Deletes the base directory."""
         del self._base_dir
 
     @property
-    def files(self):
+    def files(self) -> DirJSON:
         """Gets the files containing the project's directory structure."""
         if not self._files:
             self._files = self.read()
@@ -59,41 +64,41 @@ class Project:
         return self._files
 
     @files.setter
-    def files(self, value):
+    def files(self, value: DirJSON) -> None:
         """Sets the files corresponding to the project's directory structure."""
         self._files = value
 
     @files.deleter
-    def files(self):
+    def files(self) -> None:
         """Deletes the files corresponding to the project's directory structure."""
         del self._files
 
-    def dispose(self):
+    def dispose(self) -> None:
         try:
             shutil.rmtree(self._base_dir)
         except FileNotFoundError:
             # No need to do anything, file structure has already been cleaned up!
             pass
 
-    def merge_files(self, dir_json):
+    def merge_files(self, dir_json: DirJSON) -> None:
         """Merges an object containing a directory represention with the existing files."""
         self.files = deep_merge(self.files, dir_json)
 
-    def write(self, dir_json):
+    def write(self, dir_json: DirJSON) -> None:
         """Writes the existing files property containing a directory representation to the tmp directory."""
         if dir_json:
             self.merge_files(dir_json)
 
         self.__write_project()
 
-    def read(self):
+    def read(self) -> DirJSON:
         """Reads the contents of the base_dir to a dict and ignores any files/dirs matched by the glob expressions"""
-        files: Dict[str, Any] = {}
+        files: DirJSON = {}
 
         for path in Path(self.base_dir).rglob(
             "*", exclude=self._ignore_patterns, flags=DOTGLOB | GLOBSTAR
         ):
-            rel_path = path.relative_to(self.base_dir)
+            rel_path = str(path.relative_to(self.base_dir))
 
             if str(rel_path) == ".":
                 continue
@@ -108,18 +113,18 @@ class Project:
 
         return files
 
-    def get(self, object_path):
+    def get(self, object_path: str) -> DirJSON:
         if self._files == {}:
             self._files = self.read()
 
-        return extract_dict(self._files, object_path)
+        return cast(DirJSON, extract_dict(self._files, object_path))
 
-    def __auto_base_dir(self):
+    def __auto_base_dir(self) -> None:
         """Creates and sets the base_dir if not explicitly configured during init"""
         if not self._base_dir:
             self._base_dir = tempfile.mkdtemp()
 
-    def __add_file(self, files, path, contents):
+    def __add_file(self, files: DirJSON, path: str, contents: str) -> None:
         file = os.path.basename(path)
         dir_name = os.path.dirname(path)
 
@@ -128,26 +133,25 @@ class Project:
         else:
             files[file] = contents
 
-    def __add_dir(self, files, path):
+    def __add_dir(self, files: DirJSON, path: str) -> DirJSON:
         path = str(path)
         if not keys_exists(files, *path.split("/")):
             inject_dict(files, path, {})
 
-        return extract_dict(files, path)
+        return cast(DirJSON, extract_dict(files, path))
 
-    def __write_project(self):
+    def __write_project(self) -> None:
         self.__auto_base_dir()
         self.__write(self.files, self.base_dir)
 
-    def __write(self, files, full_path):
-        """Recursive write helper function. Does the bulk of the work in terms of writing the directory structure"""
-        if not files or not isinstance(files, dict):
+    def __write(self, files: DirJSON, full_path: str) -> None:
+        if not files or not isinstance(files, Dict):
             return
 
-        original_dir = Path(full_path)
+        original_dir = str(Path(full_path))
 
         for entry in files:
-            full_path = Path(full_path, entry)
+            full_path = str(Path(full_path, entry))
 
             if not isinstance(entry, str) or entry == "":
                 raise InvalidProjectError(
@@ -155,14 +159,14 @@ class Project:
                 )
 
             if isinstance(files[entry], str):
-                write_to_file(full_path, files[entry])
+                write_to_file(str(full_path), cast(str, files[entry]))
             else:
                 if entry == "." or entry == "..":
                     raise InvalidProjectError('Directory entry must not be "." or ".."')
 
                 create_directory(full_path)
                 # Our recursion step, which should only happen if we find ourselves a nested directory
-                self.__write(files=files[entry], full_path=full_path)
+                self.__write(cast(DirJSON, files[entry]), str(full_path))
 
             # Reset the original path because Python will still remember the value of `full_path` even after we return from recursion
             full_path = original_dir
