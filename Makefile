@@ -57,14 +57,13 @@ check-codestyle:
 mypy:
 	poetry run mypy --config-file pyproject.toml ./
 
-.PHONY: check-safety
-check-safety:
+.PHONY: check
+check:
 	poetry check
-	poetry run safety check --full-report
 	poetry run bandit -ll --recursive python_fixturify_project tests
 
 .PHONY: lint
-lint: test check-codestyle mypy check-safety
+lint: test check-codestyle mypy check
 
 .PHONY: update-dev-deps
 update-dev-deps:
