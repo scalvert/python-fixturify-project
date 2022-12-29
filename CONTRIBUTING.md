@@ -52,7 +52,7 @@ Automatic formatting uses `pyupgrade`, `isort` and `black`.
 make codestyle
 
 # or use synonym
-make formatting
+make format
 ```
 
 Codestyle checks only, without rewriting files:
@@ -118,32 +118,7 @@ make test && make check-codestyle && make mypy && make check-safety
 </details>
 
 <details>
-<summary>8. Docker</summary>
-<p>
-
-```bash
-make docker-build
-```
-
-which is equivalent to:
-
-```bash
-make docker-build VERSION=latest
-```
-
-Remove docker image with
-
-```bash
-make docker-remove
-```
-
-More information [about docker](https://github.com/scalvert/python-fixturify-project/tree/main/docker).
-
-</p>
-</details>
-
-<details>
-<summary>9. Cleanup</summary>
+<summary>9. Clean</summary>
 <p>
 Delete pycache files
 
@@ -172,7 +147,7 @@ make mypycache-remove
 Or to remove all above run:
 
 ```bash
-make cleanup
+make clean
 ```
 
 </p>
@@ -192,12 +167,12 @@ make pre-commit-install
 
 To activate your `virtualenv` run `poetry shell`.
 
-## Codestyle
+## Format
 
 After installation you may execute code formatting.
 
 ```bash
-make codestyle
+make format
 ```
 
 ### Checks

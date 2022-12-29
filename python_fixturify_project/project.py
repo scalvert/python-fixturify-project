@@ -21,7 +21,7 @@ DirJSON = Dict[str, Union["DirJSON", str, None]]
 class Project:
     """Represents a project directory structure."""
 
-    def __init__(self, files: DirJSON | None = None, ignore_patterns: List[str] = []):
+    def __init__(self, files: DirJSON | None = None, ignore_patterns: list[str] = []):
         self._base_dir = ""
         self._files = files or {}
         self._ignore_patterns = DEFAULT_IGNORE_PATTERNS + (ignore_patterns or [])
