@@ -45,6 +45,6 @@ jobs:
       run: |
         make test
 
-    - name: Run safety checks
+    - name: Run checks
       run: |
-        make check-safety
+        make check

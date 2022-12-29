@@ -69,23 +69,6 @@ Update all dev libraries to the latest version using one comand
 make update-dev-deps
 ```
 
-<details>
-<summary>4. Code security</summary>
-<p>
-
-```bash
-make check-safety
-```
-
-This command launches `Poetry` integrity checks as well as identifies security issues with `Safety` and `Bandit`.
-
-```bash
-make check-safety
-```
-
-</p>
-</details>
-
 </p>
 </details>
 
@@ -220,7 +203,6 @@ make codestyle
 ### Checks
 
 Many checks are configured for this project. Command `make check-codestyle` will check black, isort and darglint.
-The `make check-safety` command will look at the security of your code.
 
 Comand `make lint` applies all checks.
 
