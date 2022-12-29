@@ -14,11 +14,11 @@ repository = "https://github.com/scalvert/python-fixturify-project"
 homepage = "https://github.com/scalvert/python-fixturify-project"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
-keywords = [] #! Update me
+keywords = ["fixtures", "dynamic fixtures", "test fixtures"]
 
 # Pypi classifiers: https://pypi.org/classifiers/
-classifiers = [ #! Update me
-  "Development Status :: 3 - Alpha",
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
@@ -27,6 +27,7 @@ classifiers = [ #! Update me
   "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
 ]
 
 
@@ -53,6 +54,7 @@ coverage-badge = "^1.1.0"
 pytest-html = "^3.1.1"
 pytest-cov = "^3.0.0"
 syrupy = "^3.0.0"
+
 
 [tool.black]
 # https://github.com/psf/black
@@ -159,13 +161,11 @@ addopts = [
 
 [tool.coverage.run]
 source = ["tests"]
-
-[coverage.paths]
-source = "python-fixturify-project"
-
-[coverage.run]
 branch = true
 
-[coverage.report]
+[tool.coverage.paths]
+source = ["python-fixturify-project"]
+
+[tool.coverage.report]
 fail_under = 50
 show_missing = true

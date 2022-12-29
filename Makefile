@@ -28,16 +28,12 @@ pre-commit-install:
 	poetry run pre-commit install
 
 #* Formatters
-.PHONY: codestyle
-codestyle:
+.PHONY: format
+format:
 	poetry run pyupgrade --exit-zero-even-if-changed --py37-plus **/*.py
 	poetry run isort --settings-path pyproject.toml ./
 	poetry run black --config pyproject.toml ./
 
-.PHONY: formatting
-formatting: codestyle
-
-#* Linting
 .PHONY: test
 test:
 	PYTHONPATH=$(PYTHONPATH) poetry run pytest -vv -c pyproject.toml --cov-report=html --cov=python_fixturify_project tests/
@@ -63,29 +59,12 @@ check:
 	poetry run bandit -ll --recursive python_fixturify_project tests
 
 .PHONY: lint
-lint: test check-codestyle mypy check
+lint: check-codestyle mypy check
 
 .PHONY: update-dev-deps
 update-dev-deps:
 	poetry add -D bandit@latest darglint@latest "isort[colors]@latest" mypy@latest pre-commit@latest pydocstyle@latest pylint@latest pytest@latest pyupgrade@latest safety@latest coverage@latest coverage-badge@latest pytest-html@latest pytest-cov@latest
 	poetry add -D --allow-prereleases black@latest
-
-#* Docker
-# Example: make docker-build VERSION=latest
-# Example: make docker-build IMAGE=some_name VERSION=0.1.0
-.PHONY: docker-build
-docker-build:
-	@echo Building docker $(IMAGE):$(VERSION) ...
-	docker build \
-		-t $(IMAGE):$(VERSION) . \
-		-f ./docker/Dockerfile --no-cache
-
-# Example: make docker-remove VERSION=latest
-# Example: make docker-remove IMAGE=some_name VERSION=0.1.0
-.PHONY: docker-remove
-docker-remove:
-	@echo Removing docker $(IMAGE):$(VERSION) ...
-	docker rmi -f $(IMAGE):$(VERSION)
 
 #* Cleaning
 .PHONY: pycache-remove
@@ -112,5 +91,5 @@ pytestcache-remove:
 build-remove:
 	rm -rf build/
 
-.PHONY: cleanup
-cleanup: pycache-remove dsstore-remove mypycache-remove ipynbcheckpoints-remove pytestcache-remove
+.PHONY: clean
+clean: pycache-remove dsstore-remove mypycache-remove ipynbcheckpoints-remove pytestcache-remove
