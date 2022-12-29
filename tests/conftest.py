@@ -1,8 +1,8 @@
-from typing import Any, Dict
+from python_fixturify_project.project import DirJSON
 
-BAD_DIR_NAME: Dict[str, Any] = {"test_dir": {"..": {}}}
+BAD_DIR_NAME: DirJSON = {"test_dir": {"..": {}}}
 
-BAD_EMPTY_NAME: Dict[str, Any] = {
+BAD_EMPTY_NAME: DirJSON = {
     "test_dir": {
         "valid_dir": {"valid_empty_file.txt": ""},
         "valid_file.txt": "some text",
@@ -10,9 +10,9 @@ BAD_EMPTY_NAME: Dict[str, Any] = {
     }
 }
 
-GOOD_SINGLE_FILE: Dict[str, Any] = {"valid_file.txt": "some text"}
+GOOD_SINGLE_FILE: DirJSON = {"valid_file.txt": "some text"}
 
-GOOD_NESTED_DIRS: Dict[str, Any] = {
+GOOD_NESTED_DIRS: DirJSON = {
     ".a_hidden_folder": {
         "nested_dir": {
             ".a_hidden_file": "some text",

@@ -7,7 +7,7 @@ from conftest import BAD_DIR_NAME, BAD_EMPTY_NAME, GOOD_NESTED_DIRS, GOOD_SINGLE
 from deepdiff import DeepDiff
 
 from python_fixturify_project.exceptions import InvalidProjectError
-from python_fixturify_project.project import Project
+from python_fixturify_project.project import DirJSON, Project
 
 
 def test_project():
@@ -95,6 +95,46 @@ def test_improper_write(test_input):
         project.write(test_input)
 
 
+def test_proper_write(snapshot):
+    project = Project()
+
+    project.write(GOOD_NESTED_DIRS)
+
+    assert project.files == snapshot
+
+    assert Path(project.base_dir, ".a_hidden_folder").exists()
+    assert Path(project.base_dir, ".a_hidden_folder").is_dir()
+
+    assert Path(project.base_dir, "valid_file.txt").exists()
+    assert Path(project.base_dir, "valid_file.txt").is_file()
+
+    assert Path(project.base_dir, "nested_dir").exists()
+    assert Path(project.base_dir, "nested_dir").is_dir()
+
+    assert Path(project.base_dir, "nested_dir", "valid_empty_file.txt").exists()
+    assert Path(project.base_dir, "nested_dir", "valid_empty_file.txt").is_file()
+
+    assert Path(project.base_dir, "nested_dir", "another_nested_empty_dir").exists()
+    assert Path(project.base_dir, "nested_dir", "another_nested_empty_dir").is_dir()
+
+    assert Path(project.base_dir, "nested_dir", "another_nested_dir").exists()
+    assert Path(project.base_dir, "nested_dir", "another_nested_dir").is_dir()
+
+    assert Path(
+        project.base_dir, "nested_dir", "another_nested_dir", "last_nested_empty_dir"
+    ).exists()
+    assert Path(
+        project.base_dir, "nested_dir", "another_nested_dir", "last_nested_empty_dir"
+    ).is_dir()
+
+    assert Path(
+        project.base_dir, "nested_dir", "another_nested_dir", "final_text_file.txt"
+    ).exists()
+    assert Path(
+        project.base_dir, "nested_dir", "another_nested_dir", "final_text_file.txt"
+    ).is_file()
+
+
 def test_multiple_writes_correctly_merges(snapshot):
     project = Project(files=GOOD_NESTED_DIRS)
 
@@ -130,7 +170,7 @@ def test_read_recreates_project_from_disc(snapshot):
 
 
 def test_read_recreates_project_from_disc_with_similar_filenames(snapshot):
-    files = {
+    files: DirJSON = {
         "valid_file.txt": "some text",
         "sub": {
             "valid_file.txt": "some text",
@@ -148,7 +188,7 @@ def test_read_recreates_project_from_disc_with_similar_filenames(snapshot):
 
 
 def test_read_ignore_files(snapshot):
-    files = {
+    files: DirJSON = {
         ".git": {"a_nested_dir": {"last_nested_dir": {"a_file": "some text"}}},
         ".github": {"ignore_me": {}, "do_not_ignore_me": {"a_file": "some text"}},
         "ignore_me": "some text",
