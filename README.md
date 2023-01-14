@@ -163,6 +163,16 @@ def test_mutating_project(snapshot):
     assert project.get('path/to/a_file.py') == snapshot(name='path/to/a_file.py')
 ```
 
+## Skip Dispose (for debugging)
+
+If you want to skip the `dispose()` call, you can set the `FIXTURIFY_SKIP_DISPOSE` environment variable to `1`.
+
+```bash
+FIXTURIFY_SKIP_DISPOSE=1 pytest
+```
+
+This can be useful if you want to inspect the contents of the temporary directory after the test has completed.
+
 ## 🛡 License
 
 [![License](https://img.shields.io/github/license/scalvert/python-fixturify-project)](https://github.com/scalvert/python-fixturify-project/blob/master/LICENSE)
