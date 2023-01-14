@@ -75,6 +75,11 @@ class Project:
 
     def dispose(self) -> None:
         try:
+            skip_dispose = os.environ.get("FIXTURIFY_SKIP_DISPOSE", False)
+
+            if skip_dispose:
+                return
+
             shutil.rmtree(self._base_dir)
         except FileNotFoundError:
             # No need to do anything, file structure has already been cleaned up!
