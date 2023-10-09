@@ -244,13 +244,13 @@ cli = ["clevercsv (==0.7.1)", "click (==8.0.3)", "pyyaml (==5.4.1)", "toml (==0.
 
 [[package]]
 name = "dict-path"
-version = "1.0.1"
+version = "1.1.1"
 description = "Python library to work with complicated nested dict"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "dict-path-1.0.1.tar.gz", hash = "sha256:84e000a359e9b20d1dfffacdcdc99b35bc4f6ef6390a75195c2444c1701c5f1f"},
-    {file = "dict_path-1.0.1-py3-none-any.whl", hash = "sha256:c56fe94bfbb01f40101c114cd8d8b885d5e61973d03ace7737a93058753e863c"},
+    {file = "dict-path-1.1.1.tar.gz", hash = "sha256:7e928aa59b12ce8f2786356a865f745c2762ab9359aae02ac46426729f1a9baf"},
+    {file = "dict_path-1.1.1-py3-none-any.whl", hash = "sha256:77defee9208d0c47f94072d02e9b56c3e710da2c90154cffc5df900948467427"},
 ]
 
 [[package]]
