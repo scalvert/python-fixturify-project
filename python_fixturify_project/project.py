@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Union, cast, Optional
+from typing import Dict, List, Optional, Union, cast
 
 import os
 import shutil
@@ -12,7 +12,7 @@ from wcmatch.pathlib import DOTGLOB, GLOBSTAR, Path
 from python_fixturify_project.exceptions import InvalidProjectError
 from python_fixturify_project.utils import deep_merge, keys_exists
 
-DEFAULT_IGNORE_PATTERNS: List[str] = ["**/.git", "**/.git/**"]
+DEFAULT_IGNORE_PATTERNS: list[str] = ["**/.git", "**/.git/**"]
 
 DirJSON = Dict[str, Union["DirJSON", str, None]]
 
@@ -20,10 +20,12 @@ DirJSON = Dict[str, Union["DirJSON", str, None]]
 class Project:
     """Represents a project directory structure."""
 
-    def __init__(self, files: Optional[DirJSON] = None, ignore_patterns: List[str] = []):
+    def __init__(self, files: DirJSON | None = None, ignore_patterns: list[str] = []):
         self._base_dir: str = ""
         self._files: DirJSON = files or {}
-        self._ignore_patterns: List[str] = DEFAULT_IGNORE_PATTERNS + (ignore_patterns or [])
+        self._ignore_patterns: list[str] = DEFAULT_IGNORE_PATTERNS + (
+            ignore_patterns or []
+        )
 
         self.write(self._files)
 
