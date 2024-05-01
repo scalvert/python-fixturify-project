@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Union, cast
+from typing import Dict, List, Union, cast, Optional
 
 import os
 import shutil
@@ -10,10 +10,9 @@ from dict_path import extract_dict, inject_dict
 from wcmatch.pathlib import DOTGLOB, GLOBSTAR, Path
 
 from python_fixturify_project.exceptions import InvalidProjectError
-from python_fixturify_project.path_utils import create_directory, write_to_file
 from python_fixturify_project.utils import deep_merge, keys_exists
 
-DEFAULT_IGNORE_PATTERNS = ["**/.git", "**/.git/**"]
+DEFAULT_IGNORE_PATTERNS: List[str] = ["**/.git", "**/.git/**"]
 
 DirJSON = Dict[str, Union["DirJSON", str, None]]
 
@@ -21,10 +20,10 @@ DirJSON = Dict[str, Union["DirJSON", str, None]]
 class Project:
     """Represents a project directory structure."""
 
-    def __init__(self, files: DirJSON | None = None, ignore_patterns: list[str] = []):
-        self._base_dir = ""
-        self._files = files or {}
-        self._ignore_patterns = DEFAULT_IGNORE_PATTERNS + (ignore_patterns or [])
+    def __init__(self, files: Optional[DirJSON] = None, ignore_patterns: List[str] = []):
+        self._base_dir: str = ""
+        self._files: DirJSON = files or {}
+        self._ignore_patterns: List[str] = DEFAULT_IGNORE_PATTERNS + (ignore_patterns or [])
 
         self.write(self._files)
 
@@ -164,12 +163,13 @@ class Project:
                 )
 
             if isinstance(files[entry], str):
-                write_to_file(str(full_path), cast(str, files[entry]))
+                with open(Path(full_path), "w") as f:
+                    f.write(cast(str, files[entry]))
             else:
                 if entry == "." or entry == "..":
                     raise InvalidProjectError('Directory entry must not be "." or ".."')
 
-                create_directory(full_path)
+                Path(full_path).mkdir(parents=True, exist_ok=True)
                 # Our recursion step, which should only happen if we find ourselves a nested directory
                 self.__write(cast(DirJSON, files[entry]), str(full_path))
 
