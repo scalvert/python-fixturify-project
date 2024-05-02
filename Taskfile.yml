@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+#
+# see https://taskfile.dev/usage/
+# brew install go-task
+
+version: '3'
+
+env:
+  SHELL: /usr/bin/env bash
+  PYTHON: python3
+  PYTHONPATH: '{{.PWD}}'
+  IMAGE: python_fixturify_project
+  VERSION: latest
+
+vars:
+  PYTHONPATH: '{{.PWD}}'
+
+tasks:
+  default:
+    cmds:
+      - echo $'To list all tasks run:\n\n\t task --list-all\n'
+      - task --list
+    silent: true
+
+  poetry-download:
+    cmds:
+      - curl -sSL https://install.python-poetry.org | {{.PYTHON}} -
+
+  poetry-remove:
+    cmds:
+      - curl -sSL https://install.python-poetry.org | {{.PYTHON}} - --uninstall
+
+  install:
+    cmds:
+      - poetry lock -n && poetry export --without-hashes > requirements.txt
+      - poetry install -n
+
+  pre-commit-install:
+    cmds:
+      - poetry run pre-commit install
+
+  lint:fix:
+    cmds:
+      - poetry run pyupgrade --exit-zero-even-if-changed --py37-plus **/*.py
+      - poetry run isort --settings-path pyproject.toml ./
+      - poetry run ruff check --fix
+      - poetry run ruff format
+
+  test:
+    cmds:
+      - 'PYTHONPATH={{.PYTHONPATH}} poetry run pytest -vv -c pyproject.toml --cov-report=html --cov=python_fixturify_project tests/'
+      - poetry run coverage-badge -o assets/images/coverage.svg -f
+
+  update-snapshot:
+    cmds:
+      - 'PYTHONPATH={{.PYTHONPATH}} poetry run pytest --snapshot-update -c pyproject.toml tests/'
+
+  lint:codestyle:
+    cmds:
+      - poetry run isort --diff --check-only --settings-path pyproject.toml ./
+      - poetry run ruff format --diff
+      - poetry run darglint --verbosity 2 python_fixturify_project tests
+
+  lint:ruff:
+    cmds:
+      - poetry run ruff check
+
+  lint:check:
+    cmds:
+      - poetry check
+      - poetry run bandit -ll --recursive python_fixturify_project tests
+
+  lint:
+    deps: [lint:codestyle, lint:ruff, lint:check]
+
+  update:dev:
+    cmds:
+      - poetry add -D bandit@latest darglint@latest "isort[colors]@latest" pre-commit@latest pydocstyle@latest pylint@latest pytest@latest pyupgrade@latest safety@latest coverage@latest coverage-badge@latest pytest-html@latest pytest-cov@latest
+      - poetry add -D --allow-prereleases black@latest
+
+  clean:
+    cmds:
+      - find . | grep -E "(__pycache__|\.pyc|\.pyo$$)" | xargs rm -rf
+      - find . | grep -E ".DS_Store" | xargs rm -rf
+      - find . | grep -E ".ipynb_checkpoints" | xargs rm -rf
+      - find . | grep -E ".pytest_cache" | xargs rm -rf
+      - rm -rf build/

@@ -20,15 +20,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.1.4
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install poetry
-        run: make poetry-download
+      - name: Setup go-task
+        uses: arduino/setup-task@v2
 
-      - name: Set up cache
+      - name: Setup poetry
+        uses: Gr1N/setup-poetry@v8
+
+      - name: Setup cache
         uses: actions/cache@v4.0.2
         with:
           path: .venv
@@ -40,8 +43,8 @@ jobs:
 
       - name: Run lint
         run: |
-          make lint
+          task lint
 
       - name: Run tests
         run: |
-          make test
+          task test

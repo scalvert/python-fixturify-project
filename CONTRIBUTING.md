@@ -1,168 +1,35 @@
 # How to contribute
 
-### Makefile usage
+### Tasks usage
 
-[`Makefile`](https://github.com/scalvert/python-fixturify-project/blob/main/Makefile) contains a lot of functions for faster development.
+[`Taskfile.yml`](https://github.com/scalvert/python-fixturify-project/blob/main/Taskfile.yml) contains a lot of functions for faster development.
 
-<details>
-<summary>1. Download and remove Poetry</summary>
-<p>
-
-To download and install Poetry run:
-
-```bash
-make poetry-download
-```
-
-To uninstall
-
-```bash
-make poetry-remove
-```
-
-</p>
-</details>
-
-<details>
-<summary>2. Install all dependencies and pre-commit hooks</summary>
-<p>
-
-Install requirements:
-
-```bash
-make install
-```
-
-Pre-commit hooks coulb be installed after `git init` via
-
-```bash
-make pre-commit-install
-```
-
-</p>
-</details>
-
-<details>
-<summary>3. Codestyle</summary>
-<p>
-
-Automatic formatting uses `pyupgrade`, `isort` and `black`.
-
-```bash
-make codestyle
-
-# or use synonym
-make format
-```
-
-Codestyle checks only, without rewriting files:
-
-```bash
-make check-codestyle
-```
-
-> Note: `check-codestyle` uses `isort`, `black` and `darglint` library
-
-Update all dev libraries to the latest version using one comand
-
-```bash
-make update-dev-deps
-```
-
-</p>
-</details>
-
-<details>
-<summary>5. Type checks</summary>
-<p>
-
-Run `mypy` static type checker
-
-```bash
-make mypy
-```
-
-</p>
-</details>
-
-<details>
-<summary>6. Tests with coverage badges</summary>
-<p>
-
-Run `pytest`
-
-```bash
-make test
-```
-
-</p>
-</details>
-
-<details>
-<summary>7. All linters</summary>
-<p>
-
-Of course there is a command to ~~rule~~ run all linters in one:
-
-```bash
-make lint
-```
-
-the same as:
-
-```bash
-make test && make check-codestyle && make mypy && make check-safety
-```
-
-</p>
-</details>
-
-<details>
-<summary>9. Clean</summary>
-<p>
-Delete pycache files
-
-```bash
-make pycache-remove
-```
-
-Remove package build
-
-```bash
-make build-remove
-```
-
-Delete .DS_STORE files
-
-```bash
-make dsstore-remove
-```
-
-Remove .mypycache
-
-```bash
-make mypycache-remove
-```
-
-Or to remove all above run:
-
-```bash
-make clean
-```
-
-</p>
-</details>
+| Task Name            | Description                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `poetry-download`    | Downloads and installs Poetry.                                                                              |
+| `poetry-remove`      | Uninstalls Poetry.                                                                                          |
+| `install`            | Locks dependencies with Poetry, exports them to `requirements.txt`, and installs them. Runs `mypy` as well. |
+| `pre-commit-install` | Installs pre-commit hooks using Poetry.                                                                     |
+| `format`             | Runs formatters (`pyupgrade`, `isort`, `black`) on Python files.                                            |
+| `test`               | Runs tests with pytest and generates a coverage report and badge.                                           |
+| `update-snapshot`    | Updates test snapshots using pytest.                                                                        |
+| `check-codestyle`    | Checks code style with `isort`, `black`, and `darglint`.                                                    |
+| `mypy`               | Runs type checks using `mypy`.                                                                              |
+| `check`              | Runs various checks (`poetry check` and `bandit`) on the project.                                           |
+| `lint`               | Aggregates linting tasks: code style check, `mypy`, and general checks.                                     |
+| `update-dev-deps`    | Updates development dependencies to their latest versions using Poetry.                                     |
+| `clean`              | Removes various cache and temporary files from the project directory.                                       |
 
 ## Dependencies
 
 We use `poetry` to manage the [dependencies](https://github.com/python-poetry/poetry).
-If you dont have `poetry`, you should install with `make poetry-download`.
+If you dont have `poetry`, you should install with `task poetry-download`.
 
 To install dependencies and prepare [`pre-commit`](https://pre-commit.com/) hooks you would need to run `install` command:
 
 ```bash
-make install
-make pre-commit-install
+task install
+task pre-commit-install
 ```
 
 To activate your `virtualenv` run `poetry shell`.
@@ -172,14 +39,14 @@ To activate your `virtualenv` run `poetry shell`.
 After installation you may execute code formatting.
 
 ```bash
-make format
+task format
 ```
 
 ### Checks
 
-Many checks are configured for this project. Command `make check-codestyle` will check black, isort and darglint.
+Many checks are configured for this project. Command `task check-codestyle` will check black, isort and darglint.
 
-Comand `make lint` applies all checks.
+Comand `task lint` applies all checks.
 
 ### Before submitting
 
@@ -188,8 +55,8 @@ Before submitting your code please do the following steps:
 1. Add any changes you want
 1. Add tests for the new changes
 1. Edit documentation if you have changed something significant
-1. Run `make codestyle` to format your changes.
-1. Run `make lint` to ensure that types, security and docstrings are okay.
+1. Run `task codestyle` to format your changes.
+1. Run `task lint` to ensure that types, security and docstrings are okay.
 
 ## Other help
 
