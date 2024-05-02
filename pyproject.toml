@@ -79,6 +79,10 @@ exclude = '''
 )/
 '''
 
+[tool.darglint]
+strictness = "long"
+docstring_style = "google"
+
 [tool.isort]
 # https://github.com/timothycrosley/isort/
 py_version = 37
@@ -104,33 +108,6 @@ profile = "black"
 multi_line_output = 3
 indent = 4
 color_output = true
-
-[tool.mypy]
-# https://mypy.readthedocs.io/en/latest/config_file.html#using-a-pyproject-toml-file
-python_version = 3.7
-pretty = true
-show_traceback = true
-color_output = true
-
-allow_redefinition = false
-check_untyped_defs = true
-disallow_any_generics = true
-disallow_incomplete_defs = true
-ignore_missing_imports = true
-implicit_reexport = false
-no_implicit_optional = true
-show_column_numbers = true
-show_error_codes = true
-show_error_context = true
-strict_equality = true
-strict_optional = true
-warn_no_return = true
-warn_redundant_casts = true
-warn_return_any = true
-warn_unreachable = true
-warn_unused_configs = true
-warn_unused_ignores = true
-exclude = 'tests/'
 
 [tool.pytest.ini_options]
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
