@@ -1,5 +1,5 @@
-bracex==2.3.post1 ; python_version >= "3.8" and python_version < "4.0"
+bracex==2.4 ; python_version >= "3.8" and python_version < "4.0"
 deepdiff==5.8.1 ; python_version >= "3.8" and python_version < "4.0"
-dict-path==1.0.1 ; python_version >= "3.8" and python_version < "4.0"
+dict-path==1.1.1 ; python_version >= "3.8" and python_version < "4.0"
 ordered-set==4.1.0 ; python_version >= "3.8" and python_version < "4.0"
-wcmatch==8.4.1 ; python_version >= "3.8" and python_version < "4.0"
+wcmatch==8.5.1 ; python_version >= "3.8" and python_version < "4.0"
