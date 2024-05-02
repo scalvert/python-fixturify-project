@@ -37,7 +37,8 @@ importlib_metadata = { version = "^4.5.0", python = "<3.8" }
 dict-path = "^1.0.1"
 wcmatch = "^8.4.1"
 deepdiff = "^5.8.1"
-[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
 bandit = "^1.7.8"
 black = { version = "^24.3.0", allow-prereleases = true }
 darglint = "^1.8.1"
@@ -53,8 +54,8 @@ coverage = "^7.3.0"
 coverage-badge = "^1.1.0"
 pytest-html = "^3.1.1"
 pytest-cov = "^3.0.0"
+ruff = "^0.4.2"
 syrupy = "^3.0.0"
-
 
 [tool.black]
 # https://github.com/psf/black
