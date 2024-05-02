@@ -73,7 +73,7 @@ tasks:
   lint:
     deps: [lint:codestyle, lint:ruff, lint:check]
 
-  update-dev-deps:
+  update:dev:
     cmds:
       - poetry add -D bandit@latest darglint@latest "isort[colors]@latest" pre-commit@latest pydocstyle@latest pylint@latest pytest@latest pyupgrade@latest safety@latest coverage@latest coverage-badge@latest pytest-html@latest pytest-cov@latest
       - poetry add -D --allow-prereleases black@latest
