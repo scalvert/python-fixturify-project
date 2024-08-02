@@ -32,7 +32,7 @@ poetry add python-fixturify-project --dev
 `python-fixturify-project` is a Python package that provides a way to create dynamic fixtures for your tests. Fixtures are real directories and files, written to a temporary directory.
 
 ```python
-from python_fixturify_project import Project
+from python_fixturify_project.project import Project
 
 dir_json = {
     "valid_file.txt": "some text",
@@ -102,7 +102,7 @@ First, we define a fixture to setup and teardown our `Project` instance:
 # conftest.py
 import pytest
 
-from python_fixturify_project import Project
+from python_fixturify_project.project import Project
 
 
 @pytest.fixture
@@ -117,7 +117,7 @@ def project():
 This fixture uses `pytest`'s `yield` fixture pattern, which allows us to run some code after the test has completed. In this case, we use the `dispose()` method to remove the temporary directory created by `python-fixturify-project`.
 
 ```python
-from python_fixturify_project import Project
+from python_fixturify_project.project import Project
 
 
 def test_mutating_project(project, snapshot):
@@ -142,7 +142,7 @@ def test_mutating_project(project, snapshot):
 Or you can use the `project.get` method to get the path to a file in the project.
 
 ```python
-from python_fixturify_project import Project
+from python_fixturify_project.project import Project
 
 def test_mutating_project(snapshot):
     project.write({
