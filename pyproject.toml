@@ -52,7 +52,7 @@ coverage = "^7.3.0"
 coverage-badge = "^1.1.0"
 pytest-html = "^3.1.1"
 pytest-cov = "^3.0.0"
-ruff = "^0.4.2"
+ruff = ">=0.4.2,<0.8.0"
 syrupy = "^3.0.0"
 
 [tool.black]
